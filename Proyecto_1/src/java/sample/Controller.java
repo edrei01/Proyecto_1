@@ -68,9 +68,8 @@ public class Controller implements Initializable  {
     Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent actionEvent) {
-
-
             movePaddle();
+            checkCollisionPaddle(paddle);
             circle.setLayoutX(circle.getLayoutX() + deltaX);
             circle.setLayoutY(circle.getLayoutY() + deltaY);
 
@@ -138,6 +137,23 @@ public class Controller implements Initializable  {
             paddle.setLayoutX(0);
         } else if (xPos > (sceneXPos + scene.getWidth()) - (paddleWidth/2)){
             paddle.setLayoutX(scene.getWidth() - paddleWidth);
+        }
+    }
+    public void checkCollisionPaddle(Rectangle paddle){
+
+        if(circle.getBoundsInParent().intersects(paddle.getBoundsInParent())){
+
+            boolean rightBorder = circle.getLayoutX() >= ((paddle.getLayoutX() + paddle.getWidth()) - circle.getRadius());
+            boolean leftBorder = circle.getLayoutX() <= (paddle.getLayoutX() + circle.getRadius());
+            boolean bottomBorder = circle.getLayoutY() >= ((paddle.getLayoutY() + paddle.getHeight()) - circle.getRadius());
+            boolean topBorder = circle.getLayoutY() <= (paddle.getLayoutY() + circle.getRadius());
+
+            if (rightBorder || leftBorder) {
+                deltaX *= -1;
+            }
+            if (bottomBorder || topBorder) {
+                deltaY *= -1;
+            }
         }
     }
 
