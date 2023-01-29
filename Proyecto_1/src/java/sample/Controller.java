@@ -44,8 +44,8 @@ public class Controller implements Initializable  {
            // fondo = new ImageView(new Image(getClass().getResourceAsStream("/image/img.png")));
             //scene.getChildren().add(fondo);
 
-
             createBricks();
+            timeline.play();
         startButton.setVisible(true);
         Thread thread = new Thread(){
             public void run(){
@@ -70,7 +70,7 @@ public class Controller implements Initializable  {
         public void handle(ActionEvent actionEvent) {
 
 
-
+            movePaddle();
             circle.setLayoutX(circle.getLayoutX() + deltaX);
             circle.setLayoutY(circle.getLayoutY() + deltaY);
 
@@ -123,6 +123,21 @@ public class Controller implements Initializable  {
                 }
                 spaceCheck++;
             }
+        }
+    }
+    public void movePaddle(){
+        Bounds bounds = scene.localToScreen(scene.getBoundsInLocal());
+        double sceneXPos = bounds.getMinX();
+
+        double xPos = robot.getMouseX();
+        double paddleWidth = paddle.getWidth();
+
+        if(xPos >= sceneXPos + (paddleWidth/2) && xPos <= (sceneXPos + scene.getWidth()) - (paddleWidth/2)){
+            paddle.setLayoutX(xPos - sceneXPos - (paddleWidth/2));
+        } else if (xPos < sceneXPos + (paddleWidth/2)){
+            paddle.setLayoutX(0);
+        } else if (xPos > (sceneXPos + scene.getWidth()) - (paddleWidth/2)){
+            paddle.setLayoutX(scene.getWidth() - paddleWidth);
         }
     }
 
