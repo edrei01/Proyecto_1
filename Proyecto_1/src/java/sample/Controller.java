@@ -11,6 +11,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.robot.Robot;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -44,7 +45,7 @@ public class Controller implements Initializable  {
             //scene.getChildren().add(fondo);
 
 
-
+            createBricks();
         startButton.setVisible(true);
         Thread thread = new Thread(){
             public void run(){
@@ -104,6 +105,24 @@ public class Controller implements Initializable  {
         }
         if (bottomBorder || topBorder) {
             deltaY *= -1;
+        }
+    }
+    public void createBricks(){
+        double width = 560;
+        double height = 200;
+
+        int spaceCheck = 1;
+
+        for (double i = height; i > 0 ; i = i - 50) {
+            for (double j = width; j > 0 ; j = j - 25) {
+                if(spaceCheck % 2 == 0){
+                    Rectangle rectangle = new Rectangle(j,i,30,30);
+                    rectangle.setFill(Color.DARKGREEN);
+                    scene.getChildren().add(rectangle);
+                    bricks.add(rectangle);
+                }
+                spaceCheck++;
+            }
         }
     }
 
