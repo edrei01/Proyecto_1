@@ -10,6 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.robot.Robot;
@@ -79,7 +81,7 @@ public class Controller implements Initializable  {
                 timeline.stop();
             }
             checkCollisionScene(scene);
-
+            checkCollisionBottomZone();
 
 
         }
@@ -180,6 +182,25 @@ public class Controller implements Initializable  {
             if (bottomBorder || topBorder) {
                 deltaY *= -1;
             }
+        }
+    }
+    public void checkCollisionBottomZone(){
+
+        if(circle.getBoundsInParent().intersects(bottomZone.getBoundsInParent())){
+            timeline.stop();
+            bricks.forEach(brick -> scene.getChildren().remove(brick));
+            bricks.clear();
+            paddle.setWidth(paddleStartSize);
+
+            deltaX = -1;
+            deltaY = -3;
+
+            circle.setLayoutX(300);
+            circle.setLayoutY(300);
+            startButton.setVisible(true);
+            System.out.println("Game over!");
+
+
         }
     }
 
