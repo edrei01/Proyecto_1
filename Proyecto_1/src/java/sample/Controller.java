@@ -73,7 +73,11 @@ public class Controller implements Initializable  {
             circle.setLayoutX(circle.getLayoutX() + deltaX);
             circle.setLayoutY(circle.getLayoutY() + deltaY);
 
-
+            if(!bricks.isEmpty()){
+                bricks.removeIf(brick -> checkCollisionBrick(brick));
+            } else {
+                timeline.stop();
+            }
             checkCollisionScene(scene);
 
 
@@ -105,6 +109,28 @@ public class Controller implements Initializable  {
         if (bottomBorder || topBorder) {
             deltaY *= -1;
         }
+    }
+    public boolean checkCollisionBrick(Rectangle brick){
+
+        if(circle.getBoundsInParent().intersects(brick.getBoundsInParent())){
+            boolean rightBorder = circle.getLayoutX() >= ((brick.getX() + brick.getWidth()) - circle.getRadius());
+            boolean leftBorder = circle.getLayoutX() <= (brick.getX() + circle.getRadius());
+            boolean bottomBorder = circle.getLayoutY() >= ((brick.getY() + brick.getHeight()) - circle.getRadius());
+            boolean topBorder = circle.getLayoutY() <= (brick.getY() + circle.getRadius());
+
+            if (rightBorder || leftBorder) {
+                deltaX *= -1;
+            }
+            if (bottomBorder || topBorder) {
+                deltaY *= -1;
+            }
+
+            paddle.setWidth(paddle.getWidth() - (0.10 * paddle.getWidth()));
+            scene.getChildren().remove(brick);
+
+            return true;
+        }
+        return false;
     }
     public void createBricks(){
         double width = 560;
